@@ -1,0 +1,5 @@
+goto-thing-at-cursor support jumping to file if you hit \gf on a require(_rel) line
+
+Use such a mapping to create requires or require_rel's lines
+" inoremap <m-r><m-e> <c-r>='require "'.ruby_utils#InsertRequire('require').'"'<cr>
+" inoremap <m-r><m-r> <c-r>='require_rel "'.ruby_utils#InsertRequire('require_rel').'"'<cr>
