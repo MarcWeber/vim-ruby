@@ -34,15 +34,19 @@ fun! ruby_utils#RubyModules()
   return l
 endf
 
+fun! s:Select(label, list)
+  return tlib#input#List("s", a:label, a:list)
+endf
+
 " now you can map it like this:
 " inoremap <m-r><m-e> <c-r>='require "'.ruby_utils#InsertRequire('require').'"'<cr>
 " inoremap <m-r><m-r> <c-r>='require_rel "'.ruby_utils#InsertRequire('require_rel').'"'<cr>
 fun! ruby_utils#InsertRequire(type)
   if a:type == "require"
-    return substitute(tlib#input#List("s",'choose req file: ', ruby_utils#RubyModules()), '\.rb$', '', '')
+    return substitute(s:Select('choose req file: ', ruby_utils#RubyModules()), '\.rb$', '', '')
   endif
   if a:type == "require_rel"
-    return substitute(tlib#input#List("s",'choose req file: ', split(glob(expand('%:h').'/**/*.rb'),"\n")), '\%(^\.[/\\]\)\?\(.*\)\.rb$', '\1', '')
+    return substitute(s:Select('choose req file: ', split(glob(expand('%:h').'/**/*.rb'),"\n")), '\%(^\.[/\\]\)\?\(.*\)\.rb$', '\1', '')
   endif
 endf
 
@@ -60,7 +64,7 @@ fun! ruby_utils#RequireLocations()
   endif
 
   " require_rel
-  let thing = matchstr(getline('.'), "require_rel\\s\\+['\"]\\zs[^'\"]\\+\\ze['\"]")
+  let thing = matchstr(getline('.'), "require_relative\s\\+['\"]\\zs[^'\"]\\+\\ze['\"]")
 
   if thing != "" && filereadable(thing[2:])
     call add(list, { 'filename' : expand('%:h').'/'.thing.'.rb', 'break' : 1 })
