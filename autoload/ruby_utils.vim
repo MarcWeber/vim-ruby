@@ -65,8 +65,7 @@ fun! ruby_utils#RequireLocations()
 
   " require_rel
   let thing = matchstr(getline('.'), "require_relative\s\\+['\"]\\zs[^'\"]\\+\\ze['\"]")
-
-  if thing != "" && filereadable(thing[2:])
+  if thing != ''
     call add(list, { 'filename' : expand('%:h').'/'.thing.'.rb', 'break' : 1 })
   endif
 
